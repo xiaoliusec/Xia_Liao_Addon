@@ -1,6 +1,7 @@
 # xia Liao (瞎料)  二开
 
 - 工具截图
+<img width="3156" height="1246" alt="image" src="https://github.com/user-attachments/assets/fc4a7bc5-ded8-4e4e-a03c-000e20ee7588" />
 
   
 
