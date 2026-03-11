@@ -31,7 +31,7 @@ public class BurpExtender implements IBurpExtender, ITab, IHttpListener
     public PrintWriter stdout;
     JTextArea jta;//存放日志输入
     JLabel rkl_lb_10;//用来显示生成弱口令字典数量
-    String xl_version = "1.7";
+    String xl_version = "1.8";
 
 
     @Override
@@ -228,15 +228,28 @@ public class BurpExtender implements IBurpExtender, ITab, IHttpListener
 
                 //右边框上面的内容
                 JPanel jps=new JPanel();
-                jps.setLayout(new GridLayout(8, 1)); //六行一列
+                jps.setLayout(new GridLayout(6, 1)); 
+                JPanel btnPanel1 = new JPanel(new FlowLayout(FlowLayout.LEFT));
+                JPanel btnPanel2 = new JPanel(new FlowLayout(FlowLayout.LEFT));
                 JLabel jls=new JLabel("插件名：瞎料 author：算命縖子");    //创建一个标签
                 JLabel jls_1=new JLabel("吐司：www.t00ls.com");
                 JLabel jls_2=new JLabel("版本：xp_Liao V"+xl_version);
                 JLabel jls_3=new JLabel("感谢名单：Shinceho、SongS、S");
-                JButton btn1=new JButton("重新生成");
-                JLabel jls_4=new JLabel("");
-                JLabel jls_5=new JLabel("");
+                JButton btn1=new JButton("重新生成（原插件逻辑）");
+                JButton btn_over18=new JButton("生成>=18岁");
+                JButton btn_under18=new JButton("生成<18岁");
                 JButton btn2=new JButton("清空日志");
+
+                Dimension btnSize = btn1.getPreferredSize();
+                btn1.setPreferredSize(btnSize);
+                btn2.setPreferredSize(btnSize);
+                btn_over18.setPreferredSize(btnSize);
+                btn_under18.setPreferredSize(btnSize);
+
+                btnPanel1.add(btn1);
+                btnPanel1.add(btn2);
+                btnPanel2.add(btn_over18);
+                btnPanel2.add(btn_under18);
 
 
                 //右边框下面的内容
@@ -270,14 +283,40 @@ public class BurpExtender implements IBurpExtender, ITab, IHttpListener
                     }
                 });
 
+                //生成>=18岁按钮
+                btn_over18.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        txtfield_0.setText(data0_end());
+                        txtfield_1.setText(data1_end());
+                        txtfield_2.setText(data2_end_over18());
+                        txtfield_3.setText(data3_end());
+                        txtfield_4.setText(data4_end());
+                        txtfield_5.setText(data5_end());
+                        jta.setText(jta.getText()+"\n\n");
+                    }
+                });
+
+                //生成<18岁按钮
+                btn_under18.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        txtfield_0.setText(data0_end());
+                        txtfield_1.setText(data1_end());
+                        txtfield_2.setText(data2_end_under18());
+                        txtfield_3.setText(data3_end());
+                        txtfield_4.setText(data4_end());
+                        txtfield_5.setText(data5_end());
+                        jta.setText(jta.getText()+"\n\n");
+                    }
+                });
+
                 jps.add(jls);
                 jps.add(jls_1);
                 jps.add(jls_2);
                 jps.add(jls_3);
-                jps.add(btn1);
-                jps.add(jls_4);
-                jps.add(jls_5);
-                jps.add(btn2);
+                jps.add(btnPanel1);
+                jps.add(btnPanel2);
 
                 jps_2.add(jsp);
 
@@ -917,6 +956,138 @@ public class BurpExtender implements IBurpExtender, ITab, IHttpListener
         sfz += ends;
 
         jta.setText(jta.getText()+"\n"+sfz);
+        jta.setText(jta.getText()+"\n身份证所属地："+temp[1]);
+        jta.setText(jta.getText()+"\n出生日期："+birth_date);
+
+        return sfz;
+    }
+
+    //身份证(>=18岁)
+    private String data2_end_over18(){
+
+        String sfz;
+
+        String[] sfz_list={"451381|合山市","542336|聂拉木县","320902|亭湖区","321324|泗洪县","210900|阜新","511132|峨边彝族自治县","320682|如皋市","222400|延边州","411023|许昌县","420922|大悟县","511324|仪陇县","320982|大丰市","542300|日喀则市","140881|永济市","542429|巴青县","632700|玉树州","370982|新泰市","341000|黄山市","130433|馆陶县","211324|喀左县","130700|张家口","150428|喀喇沁旗","230422|绥滨县","330303|龙湾区","331002|椒江区","231002|东安区","350203|思明区","659002|阿拉尔市","320804|淮阴区","320411|新北区","141102|离石区","450404|龙圩区","341523|舒城县","130922|青县","210503|溪湖区","350105|马尾区","620924|阿克塞县","421222|通城县","330226|宁海县","620802|崆峒区","320203|南长区","451227|巴马县","532600|文山州","440600|佛山市","530400|玉溪","371402|德城区","522731|惠水县","621021|庆城县","500119|南川区","152502|锡林浩特市","320402|天宁区","370781|青州市","410800|焦作","340721|铜陵县","620503|麦积区","610402|秦都区","231200|绥化","231085|穆棱市","331100|丽水","140922|五台县","440982|化州市","320602|崇川区","130625|徐水区","140221|阳高县","220500|通化市","230223|依安县","451322|象州县","321281|兴化市","360803|青原区","410802|解放区","640402|原州区","211422|建昌县","341800|宣城市","341122|来安县","430502|双清区","320508|姑苏区","542323|江孜县","431125|江永县","330104|江干区","440184|从化区","340303|蚌山区","130123|正定县","370983|肥城市","371581|临清市","441200|肇庆市","141030|大宁县","130302|海港区","370100|济南","131026|文安县","130823|平泉县","511800|雅安","371302|兰山区","532929|云龙县","330703|金东区","430321|湘潭县","621226|礼县","230382|密山市","510812|朝天区","371122|莒县","622921|临夏县","520203|六枝特区","150525|奈曼旗","511381|阆中市","421381|广水市","211011|太子河区","211202|银州区","370304|博山区","500223|潼南区","130703|桥西区","150105|赛罕区","130322|昌黎县","421121|团风县","511423|洪雅县","430524|隆回县","522301|兴义市","420203|西塞山区","341323|灵璧县","542622|工布江达县","542226|曲松县","511323|蓬安县","140926|静乐县","130404|复兴区","530622|巧家县","320600|南通","421003|荆州区","440607|三水区","230716|上甘岭","530800|普洱","230804|前进区","230900|七台河","150303|海南区","610424|乾县","130828|围场县","620921|金塔县","330700|金华","420322|郧西县","610702|汉台区","330302|鹿城区","610431|武功县","620402|白银区","532528|元阳县","511322|营山县","220503|二道江区","430702|武陵区","130727|阳原县","620423|景泰县","370402|市中区","530827|孟连县","632223|海晏县","230300|鸡西","610581|韩城市","451224"};
+
+        Calendar birthday = Calendar.getInstance();
+        int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+        int minYear = currentYear - 45;
+        int maxYear = currentYear - 18;
+        birthday.set(Calendar.YEAR, (int) (Math.random() * (maxYear - minYear + 1)) + minYear);
+        birthday.set(Calendar.MONTH, (int) (Math.random() * 12));
+        birthday.set(Calendar.DATE, (int) (Math.random() * 31));
+
+        StringBuilder builder = new StringBuilder();
+        builder.append(birthday.get(Calendar.YEAR));
+        long month = birthday.get(Calendar.MONTH) + 1;
+        if (month < 10) {
+            builder.append("0");
+        }
+        builder.append(month);
+        long date = birthday.get(Calendar.DATE);
+        if (date < 10) {
+            builder.append("0");
+        }
+        String birth_date = builder.append(date).toString();
+
+        String codes;
+        int code = (int) (Math.random() * 1000);
+        if (code < 10) {
+            codes =  "00" + code;
+        } else if (code < 100) {
+            codes = "0" + code;
+        } else {
+            codes = "" + code;
+        }
+
+        Random rd = new Random();
+        int index = rd.nextInt(sfz_list.length);
+        String[] temp = sfz_list[index].split("\\|");
+
+        sfz = temp[0] + birth_date + codes;
+        char[] chr_sfz = sfz.toCharArray();
+
+        int[] c = { 7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2 };
+        char[] r = { '1', '0', 'X', '9', '8', '7', '6', '5', '4', '3', '2' };
+        int[] n = new int[17];
+        int result = 0;
+        for (int i = 0; i < n.length; i++) {
+            n[i] = Integer.parseInt(chr_sfz[i] + "");
+        }
+        for (int i = 0; i < n.length; i++) {
+            result += c[i] * n[i];
+        }
+        String ends = String.valueOf(r[result % 11]);
+
+        sfz += ends;
+
+        jta.setText(jta.getText()+"\n[>=18岁]"+sfz);
+        jta.setText(jta.getText()+"\n身份证所属地："+temp[1]);
+        jta.setText(jta.getText()+"\n出生日期："+birth_date);
+
+        return sfz;
+    }
+
+    //身份证(<18岁)
+    private String data2_end_under18(){
+
+        String sfz;
+
+        String[] sfz_list={"451381|合山市","542336|聂拉木县","320902|亭湖区","321324|泗洪县","210900|阜新","511132|峨边彝族自治县","320682|如皋市","222400|延边州","411023|许昌县","420922|大悟县","511324|仪陇县","320982|大丰市","542300|日喀则市","140881|永济市","542429|巴青县","632700|玉树州","370982|新泰市","341000|黄山市","130433|馆陶县","211324|喀左县","130700|张家口","150428|喀喇沁旗","230422|绥滨县","330303|龙湾区","331002|椒江区","231002|东安区","350203|思明区","659002|阿拉尔市","320804|淮阴区","320411|新北区","141102|离石区","450404|龙圩区","341523|舒城县","130922|青县","210503|溪湖区","350105|马尾区","620924|阿克塞县","421222|通城县","330226|宁海县","620802|崆峒区","320203|南长区","451227|巴马县","532600|文山州","440600|佛山市","530400|玉溪","371402|德城区","522731|惠水县","621021|庆城县","500119|南川区","152502|锡林浩特市","320402|天宁区","370781|青州市","410800|焦作","340721|铜陵县","620503|麦积区","610402|秦都区","231200|绥化","231085|穆棱市","331100|丽水","140922|五台县","440982|化州市","320602|崇川区","130625|徐水区","140221|阳高县","220500|通化市","230223|依安县","451322|象州县","321281|兴化市","360803|青原区","410802|解放区","640402|原州区","211422|建昌县","341800|宣城市","341122|来安县","430502|双清区","320508|姑苏区","542323|江孜县","431125|江永县","330104|江干区","440184|从化区","340303|蚌山区","130123|正定县","370983|肥城市","371581|临清市","441200|肇庆市","141030|大宁县","130302|海港区","370100|济南","131026|文安县","130823|平泉县","511800|雅安","371302|兰山区","532929|云龙县","330703|金东区","430321|湘潭县","621226|礼县","230382|密山市","510812|朝天区","371122|莒县","622921|临夏县","520203|六枝特区","150525|奈曼旗","511381|阆中市","421381|广水市","211011|太子河区","211202|银州区","370304|博山区","500223|潼南区","130703|桥西区","150105|赛罕区","130322|昌黎县","421121|团风县","511423|洪雅县","430524|隆回县","522301|兴义市","420203|西塞山区","341323|灵璧县","542622|工布江达县","542226|曲松县","511323|蓬安县","140926|静乐县","130404|复兴区","530622|巧家县","320600|南通","421003|荆州区","440607|三水区","230716|上甘岭","530800|普洱","230804|前进区","230900|七台河","150303|海南区","610424|乾县","130828|围场县","620921|金塔县","330700|金华","420322|郧西县","610702|汉台区","330302|鹿城区","610431|武功县","620402|白银区","532528|元阳县","511322|营山县","220503|二道江区","430702|武陵区","130727|阳原县","620423|景泰县","370402|市中区","530827|孟连县","632223|海晏县","230300|鸡西","610581|韩城市","451224"};
+
+        Calendar birthday = Calendar.getInstance();
+        int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+        int minYear = currentYear - 17;
+        int maxYear = currentYear - 6;
+        birthday.set(Calendar.YEAR, (int) (Math.random() * (maxYear - minYear + 1)) + minYear);
+        birthday.set(Calendar.MONTH, (int) (Math.random() * 12));
+        birthday.set(Calendar.DATE, (int) (Math.random() * 31));
+
+        StringBuilder builder = new StringBuilder();
+        builder.append(birthday.get(Calendar.YEAR));
+        long month = birthday.get(Calendar.MONTH) + 1;
+        if (month < 10) {
+            builder.append("0");
+        }
+        builder.append(month);
+        long date = birthday.get(Calendar.DATE);
+        if (date < 10) {
+            builder.append("0");
+        }
+        String birth_date = builder.append(date).toString();
+
+        String codes;
+        int code = (int) (Math.random() * 1000);
+        if (code < 10) {
+            codes =  "00" + code;
+        } else if (code < 100) {
+            codes = "0" + code;
+        } else {
+            codes = "" + code;
+        }
+
+        Random rd = new Random();
+        int index = rd.nextInt(sfz_list.length);
+        String[] temp = sfz_list[index].split("\\|");
+
+        sfz = temp[0] + birth_date + codes;
+        char[] chr_sfz = sfz.toCharArray();
+
+        int[] c = { 7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2 };
+        char[] r = { '1', '0', 'X', '9', '8', '7', '6', '5', '4', '3', '2' };
+        int[] n = new int[17];
+        int result = 0;
+        for (int i = 0; i < n.length; i++) {
+            n[i] = Integer.parseInt(chr_sfz[i] + "");
+        }
+        for (int i = 0; i < n.length; i++) {
+            result += c[i] * n[i];
+        }
+        String ends = String.valueOf(r[result % 11]);
+
+        sfz += ends;
+
+        jta.setText(jta.getText()+"\n[<18岁]"+sfz);
         jta.setText(jta.getText()+"\n身份证所属地："+temp[1]);
         jta.setText(jta.getText()+"\n出生日期："+birth_date);
 
